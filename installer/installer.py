@@ -55,7 +55,7 @@ def menu_handler() -> int:
     return option
 
 
-def proceed_with_installation(manager):
+def proceed_with_installation(manager: str):
     """Check for previously installed lunabotics vms and prompt user for overrides
     of the vm is previous installation is found
 
@@ -137,7 +137,17 @@ def download_vbox(version: str, platform: str, destination: str) -> str:
         requests.get(f"{VB_REPO}/{version}/{file_name}", stream=True), destination
     )
 
+def download_vm_image(destination:str):
+    """Download virtual machine image from google drive. The id for the file is kept in
+    the github repo to always download the latest image.
 
+    destination -- the file path to save the file
+    """
+
+    image_id = requests.get("https://raw.githubusercontent.com/AlfredoSequeida/automated-virtual-machine-linux-installer/main/image.txt").text.strip()
+    download_file_from_google_drive(image_id, destination)
+    
+    
 def download_file_from_google_drive(id: str, destination: str):
     """Download file from google drive
     id -- the id of the download
@@ -263,9 +273,7 @@ if __name__ == "__main__":
                 install_vbox(vbox_installer_path)
 
                 print("Downloading VirtualBox Image . . .")
-                download_file_from_google_drive(
-                    "1TcO-XM7_0y7C71-7rrGwBNlN8QMvDK0b", vbox_image_path
-                )
+                download_vm_image(vbox_image_path)
 
                 print("Setting up VirtualBox Image . . .")
                 setup_vbox_image(vbox_manager_path, vbox_image_path)
