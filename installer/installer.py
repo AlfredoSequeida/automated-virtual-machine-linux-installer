@@ -137,17 +137,20 @@ def download_vbox(version: str, platform: str, destination: str) -> str:
         requests.get(f"{VB_REPO}/{version}/{file_name}", stream=True), destination
     )
 
-def download_vm_image(destination:str):
+
+def download_vm_image(destination: str):
     """Download virtual machine image from google drive. The id for the file is kept in
     the github repo to always download the latest image.
 
     destination -- the file path to save the file
     """
 
-    image_id = requests.get("https://raw.githubusercontent.com/AlfredoSequeida/automated-virtual-machine-linux-installer/main/image.txt").text.strip()
+    image_id = requests.get(
+        "https://raw.githubusercontent.com/AlfredoSequeida/automated-virtual-machine-linux-installer/main/image.txt"
+    ).text.strip()
     download_file_from_google_drive(image_id, destination)
-    
-    
+
+
 def download_file_from_google_drive(id: str, destination: str):
     """Download file from google drive
     id -- the id of the download
